@@ -20,12 +20,14 @@ public class Main {
 				new Funcionario(contaFuncionario4, new Conta(0), 1400)
 		};
 		
-		Loja loja1 = new Loja(contaLoja1, funcionariosLoja1);
-        Loja loja2 = new Loja(contaLoja2, funcionariosLoja2);
+		Loja[] lojas = { 
+				new Loja(contaLoja1, funcionariosLoja1),
+				new Loja(contaLoja2, funcionariosLoja2)
+		};
 		
-        Cliente[] clientes = new Cliente[5];
+        Cliente[] clientes = new Cliente[1];
         for (int i = 0; i < clientes.length; i ++) {
-        	clientes[i] = new Cliente(new Conta(1000));
+        	clientes[i] = new Cliente(new Conta(1000), lojas, banco);
         	clientes[i].start();
         }
         
