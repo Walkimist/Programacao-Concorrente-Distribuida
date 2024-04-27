@@ -31,10 +31,13 @@ public class Cliente extends Thread {
 					}
 					i++;
 				} else {
-					System.out.println("Cliente " + this.getId() + " sem saldo restante para compra!");
 					break;
 				}
 			}
 		}
+	}
+
+	public double getSaldo() {
+		return conta.getSaldo();
 	}
 }
