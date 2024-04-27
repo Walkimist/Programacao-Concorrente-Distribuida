@@ -26,16 +26,12 @@ public class Cliente extends Thread {
 					if (valorCompra > conta.getSaldo()) valorCompra = conta.getSaldo();
 					if (i % 2 == 0) {
 						banco.transferir(conta, lojas[0].getConta(), valorCompra);
-						System.out.println("Cliente " + this.getId() + " realizou uma compra de R$ " + valorCompra + " na loja 1");
 					} else {
-						banco.transferir(conta, lojas[1].getConta(), valorCompra);
-						System.out.println("Cliente " + this.getId() + " realizou uma compra de R$ " + valorCompra + " na loja 2");
+						banco.transferir(conta, lojas[1].getConta(), valorCompra);;
 					}
 					i++;
 				} else {
 					System.out.println("Cliente " + this.getId() + " sem saldo restante para compra!");
-					System.out.println("Saldo Loja 1: R$ " + lojas[0].getSaldo());
-					System.out.println("Saldo Loja 2: R$ " + lojas[1].getSaldo());
 					break;
 				}
 			}

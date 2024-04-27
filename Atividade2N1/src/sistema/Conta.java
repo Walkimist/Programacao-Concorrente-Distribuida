@@ -2,9 +2,15 @@ package sistema;
 
 public class Conta {
 	private double saldo;
-
-	public Conta(double saldo) {
+	private String nome;
+	
+	public Conta(double saldo, String nome) {
 		this.saldo = saldo;
+		this.nome = nome;
+	}
+	
+	public String getNome() {
+		return nome;
 	}
 	
 	public double getSaldo() {

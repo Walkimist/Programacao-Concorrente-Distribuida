@@ -11,6 +11,7 @@ public class Banco {
 		try {
 			origem.retirarSaldo(valor);
 			destino.adicionarSaldo(valor);
+			System.out.println(origem.getNome() + " Transferiu R$ " + valor + " para " + destino.getNome());
 		} finally {
 			lock.unlock();
 		}
