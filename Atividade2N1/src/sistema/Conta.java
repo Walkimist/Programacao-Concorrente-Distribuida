@@ -4,11 +4,13 @@ public class Conta {
 	private double saldo;
 	private String nome;
 	
+	//Construtor
 	public Conta(double saldo, String nome) {
 		this.saldo = saldo;
 		this.nome = nome;
 	}
 	
+	//Getters
 	public String getNome() {
 		return nome;
 	}
@@ -16,11 +18,8 @@ public class Conta {
 	public double getSaldo() {
 		return saldo;
 	}
-
-	public void setSaldo(double saldo) {
-		this.saldo = saldo;
-	}
 	
+	//Transações
 	public void adicionarSaldo(double valor) {
 		saldo += valor;
 	}

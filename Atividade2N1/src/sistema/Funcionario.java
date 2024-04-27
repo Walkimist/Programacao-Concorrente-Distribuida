@@ -5,6 +5,7 @@ public class Funcionario extends Thread {
 	private boolean funcionarioPago;
 	private Banco banco;
 	
+	//Construtor
 	public Funcionario(Conta contaSalario, Conta contaInvestimento, Banco banco) {
 		this.contaSalario = contaSalario;
 		this.contaInvestimento = contaInvestimento;
@@ -12,20 +13,11 @@ public class Funcionario extends Thread {
 		funcionarioPago = false;
 	}
 	
+	//Getters
 	public Conta getConta( ) {
 		return contaSalario;
 	}
 	
-	public boolean foiPago() {
-		return funcionarioPago;
-	}
-	
-	public void receberSalario() {
-		double valorInvestimento = contaSalario.getSaldo() * 0.2;
-		banco.transferir(contaSalario, contaInvestimento, valorInvestimento);
-		funcionarioPago = true;
-	}
-
 	public double getSaldo() {
 		return contaSalario.getSaldo();
 	}
@@ -34,4 +26,14 @@ public class Funcionario extends Thread {
 		return contaInvestimento.getSaldo();
 	}
 	
+	public boolean foiPago() {
+		return funcionarioPago;
+	}
+	
+	//Funções
+	public void receberSalario() {
+		double valorInvestimento = contaSalario.getSaldo() * 0.2; //20% do salário é investido 
+		banco.transferir(contaSalario, contaInvestimento, valorInvestimento);
+		funcionarioPago = true;
+	}
 }
