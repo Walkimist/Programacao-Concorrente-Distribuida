@@ -20,4 +20,9 @@ public class Funcionario extends Thread {
 		contaSalario.retirarSaldo(valorInvestimento);
 		contaInvestimento.adicionarSaldo(valorInvestimento);
 	}
+	
+	@Override
+	public void run() {
+		receberSalario();
+;	}
 }
