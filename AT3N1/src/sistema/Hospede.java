@@ -20,4 +20,8 @@ public class Hospede {
 			quarto.setChaveNoQuarto(true);
 		}
 	}
+
+	public void finalizarEstadia() {
+		quarto.setChaveNoQuarto(false);
+	}
 }

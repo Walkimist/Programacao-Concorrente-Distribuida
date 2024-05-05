@@ -30,7 +30,7 @@ public class Recepcionista {
 	public Quarto[] buscarQuartosDisponiveis() {
 		List<Quarto> listaQuartosDisponiveis = new ArrayList<Quarto>();
 		for (Quarto quarto : quartos) {
-			if (!quarto.isOcupado()) {
+			if (!quarto.isOcupado() && !quarto.isEmLimpeza()) {
 				listaQuartosDisponiveis.add(quarto);
 			}
 		}
