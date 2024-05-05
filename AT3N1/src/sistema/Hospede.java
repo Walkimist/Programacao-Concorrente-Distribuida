@@ -7,6 +7,10 @@ public class Hospede {
 		this.quarto = quarto;
 	}
 	
+	public void setQuarto(Quarto quarto) {
+		this.quarto = quarto;
+	}
+
 	public void sairParaPassear() {
 		quarto.setChaveNoQuarto(false);
 	}

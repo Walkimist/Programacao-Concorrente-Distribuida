@@ -2,12 +2,21 @@ package sistema;
 
 public class Quarto {
 	private int quantidadeHospedes;
-	private boolean chaveNoQuarto, emLimpeza;
+	private boolean chaveNoQuarto, emLimpeza, ocupado;
 	
-	public Quarto(int quantidadeHospedes) {
+	public Quarto(int quantidadeHospedes, boolean ocupado) {
 		this.quantidadeHospedes = quantidadeHospedes;
+		this.ocupado = ocupado;
 		this.chaveNoQuarto = false;
 		this.emLimpeza = false;
+	}
+	
+	public boolean isOcupado() {
+		return ocupado;
+	}
+
+	public void setOcupado(boolean ocupado) {
+		this.ocupado = ocupado;
 	}
 
 	public boolean isEmLimpeza() {
