@@ -1,7 +1,10 @@
 package sistema;
 
-public class Camareira {
-	public Camareira(Quarto[] quartos) {
+public class Camareira extends Thread {
+	private Hotel hotel;
+	
+	public Camareira(Hotel hotel) {
+		this.hotel = hotel;
 	}
 	
 	public void limparQuarto(Quarto quarto) {

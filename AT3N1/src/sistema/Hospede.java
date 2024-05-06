@@ -1,10 +1,12 @@
 package sistema;
 
-public class Hospede {
+public class Hospede extends Thread {
 	private Quarto quarto;
+	private Hotel hotel;
 	
-	public Hospede(Quarto quarto) {
+	public Hospede(Quarto quarto, Hotel hotel) {
 		this.quarto = quarto;
+		this.hotel = hotel;
 	}
 	
 	public void setQuarto(Quarto quarto) {

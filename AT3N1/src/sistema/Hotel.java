@@ -3,7 +3,7 @@ package sistema;
 import java.util.ArrayList;
 import java.util.List;
 
-class Hotel {
+class Hotel extends Thread {
     private Quarto[] quartos;
     private Grupo[] grupos;
     private Recepcionista[] recepcionistas;
