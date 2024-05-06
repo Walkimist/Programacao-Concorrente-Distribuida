@@ -2,6 +2,8 @@ package sistema;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.locks.ReentrantLock;
 
 class Hotel extends Thread {
     private Quarto[] quartos;
@@ -9,6 +11,9 @@ class Hotel extends Thread {
     private Recepcionista[] recepcionistas;
     private Camareira[] camareiras;
 
+    private ReentrantLock lockFilaEspera;
+    private Queue<Grupo> filaEspera;
+    
     public Hotel() {}
 
     public void alocarHospedes(Grupo grupo) {
@@ -38,5 +43,23 @@ class Hotel extends Thread {
         quartosDisponiveis = listaQuartosDisponiveis.toArray(quartosDisponiveis);
 
         return quartosDisponiveis;
+    }
+    
+    public void colocarNaFila(Grupo grupo) {
+        lockFilaEspera.lock();
+        try {
+            filaEspera.add(grupo);
+        } finally {
+            lockFilaEspera.unlock();
+        }
+    }
+
+    public Grupo getProximoHospedeFilaEspera() {
+        lockFilaEspera.lock();
+        try {
+            return filaEspera.poll();
+        } finally {
+            lockFilaEspera.unlock();
+        }
     }
 }
