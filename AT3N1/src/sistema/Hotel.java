@@ -11,6 +11,7 @@ class Hotel extends Thread {
     private Recepcionista[] recepcionistas;
     private Camareira[] camareiras;
 
+    
     private ReentrantLock lockFilaEspera;
     private Queue<Grupo> filaEspera;
     
@@ -54,12 +55,16 @@ class Hotel extends Thread {
         }
     }
 
-    public Grupo getProximoHospedeFilaEspera() {
+    public Grupo getProximoGrupoFilaEspera() {
         lockFilaEspera.lock();
         try {
             return filaEspera.poll();
         } finally {
             lockFilaEspera.unlock();
         }
+    }
+    
+    public Queue<Grupo> getFilaEspera() {
+    	return filaEspera;
     }
 }
