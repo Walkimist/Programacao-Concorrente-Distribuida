@@ -20,7 +20,7 @@ class Hotel {
     public Hotel() {
     	quartos = new Quarto[10];
     	for (int i = 0; i < quartos.length; i ++) {
-    		quartos[i] = new Quarto(i+1, false, false, false, false, this);
+    		quartos[i] = new Quarto(i+1, false, false, false, this);
     	}
     	
     	filaEspera = new LinkedList<>();
