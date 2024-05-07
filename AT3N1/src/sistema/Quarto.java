@@ -3,19 +3,19 @@ package sistema;
 public class Quarto {
 	private Hospede[] hospedes;
 	private boolean chaveNoQuarto, emLimpeza, ocupado;
+	private Hotel hotel;
+	private int id;
 	
-	public Quarto(boolean ocupado, boolean emLimpeza, boolean chaveNoQuarto) {
+	public Quarto(int id, boolean ocupado, boolean emLimpeza, boolean chaveNoQuarto, Hotel hotel) {
+		this.id = id;
 		this.ocupado = ocupado;
 		this.chaveNoQuarto = chaveNoQuarto;
 		this.emLimpeza = emLimpeza;
+		this.hotel = hotel;
 	}
 	
 	public boolean isOcupado() {
 		return ocupado;
-	}
-
-	public void setOcupado(boolean ocupado) {
-		this.ocupado = ocupado;
 	}
 
 	public boolean isEmLimpeza() {
@@ -39,15 +39,26 @@ public class Quarto {
 		ocupado = true;
 	}
 	
+	public void livreParaLimpeza() {
+		chaveNoQuarto = false;
+		hotel.chamarCamareira(this);
+		chaveNoQuarto = true;
+	}
+	
 	public void removerHospedes() {
 		for (Hospede hospede : hospedes) {
 			hospede.setQuarto(null);
 		}
+		livreParaLimpeza();
 		hospedes = null;
 		ocupado = false;
 	}
 	
 	public int getNumeroHospedes() {
 		return hospedes.length;
+	}
+
+	public int getId() {
+		return id;
 	}
 }

@@ -1,28 +1,25 @@
 package sistema;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
-class Hotel extends Thread {
+class Hotel {
     private Quarto[] quartos;
-    private Grupo[] grupos;
     private Recepcionista[] recepcionistas;
     private Camareira[] camareiras;
     
     private ReentrantLock lockFilaEspera;
     private Queue<Grupo> filaEspera;
-    //private Semaphore semaforoCamareiras;
     private Semaphore semaforoRecepcionistas;
     
     public Hotel() {
     	quartos = new Quarto[10];
     	for (int i = 0; i < quartos.length; i ++) {
-    		quartos[i] = new Quarto(false, false, false);
+    		quartos[i] = new Quarto(i+1, false, false, false, this);
     	}
     	
     	filaEspera = new LinkedList<>();
@@ -33,10 +30,15 @@ class Hotel extends Thread {
     		recepcionistas[i] = new Recepcionista(this);
     	}
     	
+    	camareiras = new Camareira[10];
+    	for (int i = 0; i < camareiras.length; i ++) {
+    		camareiras[i] = new Camareira(this);
+    	}
+    	
     	lockFilaEspera = new ReentrantLock();
     }
 
-    public void alocarHospedes(Grupo grupo) {
+    public synchronized void alocarHospedes(Grupo grupo) {
         Quarto[] quartosDisponiveis = buscarQuartosDisponiveis();
         Hospede[] hospedes = grupo.getHospedes();
         int index = 0;
@@ -57,6 +59,7 @@ class Hotel extends Thread {
     			index = 0;
         	}
         }
+        System.out.println("Grupo " + grupo.getId() + " fez check-in");
     }
     
     public void desalocarHospedes(Grupo grupo) {
@@ -95,6 +98,12 @@ class Hotel extends Thread {
             lockFilaEspera.unlock();
         }
     }
+    
+    public void chamarCamareira(Quarto quarto) {
+    	for (Camareira camareira : camareiras) {
+    			camareira.limparQuarto(quarto);
+    	}
+    }
 
     public Grupo getProximoGrupoFilaEspera() {
         lockFilaEspera.lock();
@@ -108,10 +117,6 @@ class Hotel extends Thread {
     public Queue<Grupo> getFilaEspera() {
     	return filaEspera;
     }
-    
-    //public Semaphore getSemaforoCamareiras() {
-    //    return semaforoCamareiras;
-    //}
 
     public Semaphore getSemaforoRecepcionistas() {
         return semaforoRecepcionistas;
@@ -120,4 +125,8 @@ class Hotel extends Thread {
     public Recepcionista[] getRecepcionitas() {
     	return recepcionistas;
     }
+
+	public Camareira[] getCamareiras() {
+		return camareiras;
+	}
 }
