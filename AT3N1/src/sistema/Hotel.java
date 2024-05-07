@@ -34,7 +34,7 @@ class Hotel {
     	camareiras = new Camareira[10];
     	semaforoCamareiras = new Semaphore(10);
     	for (int i = 0; i < camareiras.length; i ++) {
-    		camareiras[i] = new Camareira(this);
+    		camareiras[i] = new Camareira(i+1, this);
     	}
     	
     	lockFilaEspera = new ReentrantLock();
@@ -94,16 +94,11 @@ class Hotel {
     }
     
     public synchronized void registrarReclamacao(Grupo grupo) {
-    	if (grupo.getTolerancia() > 0) {
-			System.out.println("Hotel cheio! O grupo " + grupo.getId() + " tentará mais " + grupo.getTolerancia() + " vezes");
-		} else if (grupo.getTolerancia() == 0) {
-			System.out.println("Grupo " + grupo.getId() + " desistiu de fazer check-in e deixou uma reclamação");
-		}
-    	grupo.setTolerancia(grupo.getTolerancia() - 1);
+    	
 	}
     
     public boolean checarQuartosDisponiveis() {
-    	if (buscarQuartosDisponiveis().length == 0) {
+    	if (buscarQuartosDisponiveis().length <= 0) {
     		return false;
     	}
     	return true;

@@ -45,4 +45,14 @@ public class Grupo extends Thread{
             }
 		}
 	}
+	
+	public synchronized void reduzirTolerancia() throws InterruptedException {
+		if (tolerancia > 0) {
+			System.out.println("Hotel cheio! O grupo " + this.getId() + " tentará mais " + tolerancia + " vezes");
+		} else if (tolerancia == 0) {
+			System.out.println("Grupo " + this.getId() + " desistiu de fazer check-in e deixou uma reclamação");
+		}
+    	tolerancia -= 1;
+    	Grupo.sleep(200000);
+	}
 }

@@ -32,14 +32,12 @@ public class Recepcionista extends Thread {
 			for (int i = 0; i < quartosNecessarios.length; i ++) {
 				quartosNecessarios[i] = hotel.buscarQuartosDisponiveis()[i];
 			}
-		}
-		if (hotel.checarQuartosDisponiveis() && hotel.buscarQuartosDisponiveis().length >= quantidadeQuartosNecessarios) {
-			if (proximoGrupo != null) {
+			if (proximoGrupo.getTolerancia() > 0 && quartosNecessarios.length > 0) {
 				hotel.alocarHospedes(proximoGrupo, quartosNecessarios);
 				hotel.removerGrupoFila();
 			}
 		} else {
-			hotel.registrarReclamacao(proximoGrupo);
+			proximoGrupo.reduzirTolerancia();
 		}
 	}
 	
