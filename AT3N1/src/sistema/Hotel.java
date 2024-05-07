@@ -1,6 +1,7 @@
 package sistema;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -21,12 +22,13 @@ class Hotel extends Thread {
     public Hotel() {
     	quartos = new Quarto[10];
     	for (int i = 0; i < quartos.length; i ++) {
-    		quartos[i] = new Quarto(0, false, false, false);
+    		quartos[i] = new Quarto(false, false, false);
     	}
     	
     	filaEspera = new LinkedList<>();
     	
     	recepcionistas = new Recepcionista[5];
+    	semaforoRecepcionistas = new Semaphore(5);
     	for (int i = 0; i < recepcionistas.length; i ++) {
     		recepcionistas[i] = new Recepcionista(this);
     	}
@@ -38,16 +40,38 @@ class Hotel extends Thread {
         Quarto[] quartosDisponiveis = buscarQuartosDisponiveis();
         Hospede[] hospedes = grupo.getHospedes();
         int index = 0;
+        int quarto = 0;
+        List<Hospede> listaHospedes = new ArrayList<Hospede>();
         for (Hospede hospede : hospedes) {
-            hospede.setQuarto(quartosDisponiveis[index]);
-            quartosDisponiveis[index].setQuantidadeHospedes(quartosDisponiveis[index].getQuantidadeHospedes() + 1);
-            if (quartosDisponiveis[index].getQuantidadeHospedes() == 4) {
-                index ++;
-            }
+        	listaHospedes.add(hospede);
+        	index ++;
+        	if (index > 3) {
+        		Hospede[] grupoHospedes = new Hospede[listaHospedes.size()];
+    			grupoHospedes = listaHospedes.toArray(grupoHospedes);
+    			for (Hospede hospedeAlocado : grupoHospedes) {
+    				hospedeAlocado.setQuarto(quartosDisponiveis[quarto]);
+    			}
+    			quartosDisponiveis[quarto].setHospedes(grupoHospedes);
+    			listaHospedes.clear();
+    			quarto ++;
+    			index = 0;
+        	}
         }
-        for (int i = 0; i <= index; i ++) {
-            quartos[i].setOcupado(true);
-        }
+    }
+    
+    public void desalocarHospedes(Grupo grupo) {
+    	Hospede[] hospedes = grupo.getHospedes();
+    	List<Quarto> quartosOcupados = new ArrayList<Quarto>();
+    	for (Hospede hospede : hospedes) {
+    		Quarto quarto = hospede.getQuarto();
+    		if (!quartosOcupados.contains(quarto)) {
+    			quartosOcupados.add(quarto);
+    		}
+    	}
+    	
+    	for (Quarto quarto : quartosOcupados) {
+    		if (quarto != null) quarto.removerHospedes();
+    	}
     }
 
     public Quarto[] buscarQuartosDisponiveis() {

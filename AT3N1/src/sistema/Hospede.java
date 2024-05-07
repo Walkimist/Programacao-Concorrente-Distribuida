@@ -12,6 +12,10 @@ public class Hospede extends Thread {
 	public void setQuarto(Quarto quarto) {
 		this.quarto = quarto;
 	}
+	
+	public Quarto getQuarto() {
+		return quarto;
+	}
 
 	public void sairParaPassear() {
 		quarto.setChaveNoQuarto(false);
