@@ -20,12 +20,11 @@ public class Grupo extends Thread{
 		while (true) {
 			try {
                 Thread.sleep(new Random().nextInt(15000)); // Tempo aleatório para simular chegada dos hóspedes
-                System.out.println("Grupo " + this.getId() + " procurando fazer check-in");
+                System.out.println("Grupo " + this.getId() + " de tamanho "+ hospedes.length +" procurando fazer check-in");
                 hotel.getSemaforoRecepcionistas().acquire();
-                System.out.println("Grupo " + this.getId() + " colocado na fila");
                 hotel.colocarNaFila(this);
                 hotel.getSemaforoRecepcionistas().release();
-                Thread.sleep(new Random().nextInt(22000));
+                Thread.sleep(new Random().nextInt(22000) + 10000);
                 hotel.getSemaforoRecepcionistas().acquire();
                 hotel.desalocarHospedes(this);
                 System.out.println("Grupo " + this.getId() + " Fizeram check-out");

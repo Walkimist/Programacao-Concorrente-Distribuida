@@ -40,20 +40,23 @@ class Hotel {
     	lockFilaEspera = new ReentrantLock();
     }
 
-    public synchronized void alocarHospedes(Grupo grupo) {
+    public synchronized void alocarHospedes(Grupo grupo, Quarto[] quartos) {
         Quarto[] quartosDisponiveis = buscarQuartosDisponiveis();
         Hospede[] hospedes = grupo.getHospedes();
         int index = 0;
         int quarto = 0;
         List<Hospede> listaHospedes = new ArrayList<Hospede>();
-        for (Hospede hospede : hospedes) {
-        	listaHospedes.add(hospede);
+        
+        for (int i = 0; i < hospedes.length; i++) {
+        	listaHospedes.add(hospedes[i]);
         	index ++;
-        	if (index > 3) {
+        	System.out.println(listaHospedes);
+        	if (index >= 4 || i == hospedes.length-1) {
         		Hospede[] grupoHospedes = new Hospede[listaHospedes.size()];
     			grupoHospedes = listaHospedes.toArray(grupoHospedes);
     			for (Hospede hospedeAlocado : grupoHospedes) {
     				hospedeAlocado.setQuarto(quartosDisponiveis[quarto]);
+    				System.out.println(hospedeAlocado.getQuarto());
     			}
     			quartosDisponiveis[quarto].setHospedes(grupoHospedes);
     			listaHospedes.clear();
@@ -62,7 +65,6 @@ class Hotel {
         	}
         }
         System.out.println("Grupo " + grupo.getId() + " fez check-in");
-        quarto = 0;
     }
     
     public void desalocarHospedes(Grupo grupo) {
@@ -93,10 +95,18 @@ class Hotel {
         return quartosDisponiveis;
     }
     
-    public void colocarNaFila(Grupo grupo) {
+    public boolean checarQuartosDisponiveis() {
+    	if (buscarQuartosDisponiveis().length == 0) {
+    		return false;
+    	}
+    	return true;
+    }
+    
+    public synchronized void colocarNaFila(Grupo grupo) {
         lockFilaEspera.lock();
         try {
             filaEspera.add(grupo);
+            System.out.println("Grupo " + grupo.getId() + " colocado na fila");
         } finally {
             lockFilaEspera.unlock();
         }
@@ -105,10 +115,17 @@ class Hotel {
     public Grupo getProximoGrupoFilaEspera() {
         lockFilaEspera.lock();
         try {
-            return filaEspera.poll();
+        	if (!filaEspera.isEmpty()) {
+        		return filaEspera.element();
+        	}
+            return null;
         } finally {
             lockFilaEspera.unlock();
         }
+    }
+    
+    public void removerGrupoFila() {
+    	filaEspera.remove();
     }
     
     public Queue<Grupo> getFilaEspera() {

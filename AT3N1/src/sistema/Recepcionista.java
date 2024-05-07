@@ -12,33 +12,45 @@ public class Recepcionista extends Thread {
 	@Override
 	public void run() {
         while (true) {
-        	if (!hotel.getFilaEspera().isEmpty()) {
-        		try {
-					verificarFilaEspera();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-        	}
+        	try {
+				verificarFilaEspera();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
         }
     }
 	
-	private void verificarFilaEspera() throws InterruptedException {
-		Grupo proximoGrupo = hotel.getProximoGrupoFilaEspera();
-		while (proximoGrupo == null) {
+	private synchronized void verificarFilaEspera() throws InterruptedException {
+		while (hotel.getProximoGrupoFilaEspera() == null) {
 			Thread.sleep(new Random().nextInt(2000));
 		}
-		if (hotel.buscarQuartosDisponiveis().length > quantidadeQuartosProGrupo(proximoGrupo)) {
+		
+		Grupo proximoGrupo = hotel.getProximoGrupoFilaEspera();
+		int quantidadeQuartosNecessarios = quantidadeQuartosProGrupo(proximoGrupo);
+		Quarto[] quartosNecessarios = new Quarto[quantidadeQuartosNecessarios];
+		
+		if (hotel.checarQuartosDisponiveis()) {
+			for (int i = 0; i < quartosNecessarios.length; i ++) {
+				quartosNecessarios[i] = hotel.buscarQuartosDisponiveis()[i];
+			}
+		}
+		System.out.println(hotel.buscarQuartosDisponiveis().length + " > " + quantidadeQuartosNecessarios);
+		if (hotel.buscarQuartosDisponiveis().length >= quantidadeQuartosNecessarios) {
 			if (proximoGrupo != null) {
-			hotel.alocarHospedes(proximoGrupo);
+				hotel.alocarHospedes(proximoGrupo, quartosNecessarios);
+				hotel.removerGrupoFila();
 			}
 		} else {
-			System.out.println("ta chei");
+			
 		}
 	}
 	
 	private int quantidadeQuartosProGrupo(Grupo grupo) {
-		int tamanhoGrupo = grupo.getHospedes().length;
-		int quartosNecessarios = (tamanhoGrupo + 3) / 4;
-		return quartosNecessarios;
+		 float num = (float) grupo.getHospedes().length/4;
+	     int integer = (int) num;
+	     if(num - integer > 0) {
+	         integer++;
+	     }
+	     return integer;
 	}
 }
