@@ -1,8 +1,10 @@
 package sistema;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
 class Hotel extends Thread {
@@ -10,12 +12,27 @@ class Hotel extends Thread {
     private Grupo[] grupos;
     private Recepcionista[] recepcionistas;
     private Camareira[] camareiras;
-
     
     private ReentrantLock lockFilaEspera;
     private Queue<Grupo> filaEspera;
+    //private Semaphore semaforoCamareiras;
+    private Semaphore semaforoRecepcionistas;
     
-    public Hotel() {}
+    public Hotel() {
+    	quartos = new Quarto[10];
+    	for (int i = 0; i < quartos.length; i ++) {
+    		quartos[i] = new Quarto(0, false, false, false);
+    	}
+    	
+    	filaEspera = new LinkedList<>();
+    	
+    	recepcionistas = new Recepcionista[5];
+    	for (int i = 0; i < recepcionistas.length; i ++) {
+    		recepcionistas[i] = new Recepcionista(this);
+    	}
+    	
+    	lockFilaEspera = new ReentrantLock();
+    }
 
     public void alocarHospedes(Grupo grupo) {
         Quarto[] quartosDisponiveis = buscarQuartosDisponiveis();
@@ -66,5 +83,17 @@ class Hotel extends Thread {
     
     public Queue<Grupo> getFilaEspera() {
     	return filaEspera;
+    }
+    
+    //public Semaphore getSemaforoCamareiras() {
+    //    return semaforoCamareiras;
+    //}
+
+    public Semaphore getSemaforoRecepcionistas() {
+        return semaforoRecepcionistas;
+    }
+    
+    public Recepcionista[] getRecepcionitas() {
+    	return recepcionistas;
     }
 }

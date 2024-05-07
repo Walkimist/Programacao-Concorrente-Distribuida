@@ -4,11 +4,11 @@ public class Quarto {
 	private int quantidadeHospedes;
 	private boolean chaveNoQuarto, emLimpeza, ocupado;
 	
-	public Quarto(int quantidadeHospedes, boolean ocupado) {
+	public Quarto(int quantidadeHospedes, boolean ocupado, boolean emLimpeza, boolean chaveNoQuarto) {
 		this.quantidadeHospedes = quantidadeHospedes;
 		this.ocupado = ocupado;
-		this.chaveNoQuarto = false;
-		this.emLimpeza = false;
+		this.chaveNoQuarto = chaveNoQuarto;
+		this.emLimpeza = emLimpeza;
 	}
 	
 	public boolean isOcupado() {

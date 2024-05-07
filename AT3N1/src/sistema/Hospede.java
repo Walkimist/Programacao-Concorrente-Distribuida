@@ -4,8 +4,8 @@ public class Hospede extends Thread {
 	private Quarto quarto;
 	private Hotel hotel;
 	
-	public Hospede(Quarto quarto, Hotel hotel) {
-		this.quarto = quarto;
+	public Hospede(Hotel hotel) {
+		this.quarto = null;
 		this.hotel = hotel;
 	}
 	
