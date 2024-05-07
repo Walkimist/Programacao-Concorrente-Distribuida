@@ -15,11 +15,12 @@ class Hotel {
     private ReentrantLock lockFilaEspera;
     private Queue<Grupo> filaEspera;
     private Semaphore semaforoRecepcionistas;
+    private Semaphore semaforoCamareiras;
     
     public Hotel() {
     	quartos = new Quarto[10];
     	for (int i = 0; i < quartos.length; i ++) {
-    		quartos[i] = new Quarto(i+1, false, false, false, this);
+    		quartos[i] = new Quarto(i+1, false, false, false, false, this);
     	}
     	
     	filaEspera = new LinkedList<>();
@@ -31,6 +32,7 @@ class Hotel {
     	}
     	
     	camareiras = new Camareira[10];
+    	semaforoCamareiras = new Semaphore(10);
     	for (int i = 0; i < camareiras.length; i ++) {
     		camareiras[i] = new Camareira(this);
     	}
@@ -60,6 +62,7 @@ class Hotel {
         	}
         }
         System.out.println("Grupo " + grupo.getId() + " fez check-in");
+        quarto = 0;
     }
     
     public void desalocarHospedes(Grupo grupo) {
@@ -98,12 +101,6 @@ class Hotel {
             lockFilaEspera.unlock();
         }
     }
-    
-    public void chamarCamareira(Quarto quarto) {
-    	for (Camareira camareira : camareiras) {
-    			camareira.limparQuarto(quarto);
-    	}
-    }
 
     public Grupo getProximoGrupoFilaEspera() {
         lockFilaEspera.lock();
@@ -122,11 +119,19 @@ class Hotel {
         return semaforoRecepcionistas;
     }
     
+    public Semaphore getSemaforoCamareiras() {
+		return semaforoCamareiras;
+	}
+    
     public Recepcionista[] getRecepcionitas() {
     	return recepcionistas;
     }
 
 	public Camareira[] getCamareiras() {
 		return camareiras;
+	}
+	
+	public Quarto[] getQuartos() {
+		return quartos;
 	}
 }

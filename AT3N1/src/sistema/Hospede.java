@@ -1,17 +1,12 @@
 package sistema;
 
 import java.util.Random;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Hospede extends Thread {
 	private Quarto quarto;
-	private Hotel hotel;
-	private ReentrantLock lock;
 	
-	public Hospede(Hotel hotel) {
+	public Hospede() {
 		this.quarto = null;
-		this.hotel = hotel;
-		this.lock = new ReentrantLock();
 	}
 	
 	public void setQuarto(Quarto quarto) {
@@ -32,8 +27,8 @@ public class Hospede extends Thread {
 					quarto.livreParaLimpeza();
 					while(quarto.isEmLimpeza()) {
 						Thread.sleep(new Random().nextInt(5000));
-						
 					}
+					quarto.setChaveNoQuarto(true);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

@@ -2,16 +2,17 @@ package sistema;
 
 public class Quarto {
 	private Hospede[] hospedes;
-	private boolean chaveNoQuarto, emLimpeza, ocupado;
+	private boolean chaveNoQuarto, emLimpeza, ocupado, isSujo;
 	private Hotel hotel;
 	private int id;
 	
-	public Quarto(int id, boolean ocupado, boolean emLimpeza, boolean chaveNoQuarto, Hotel hotel) {
+	public Quarto(int id, boolean ocupado, boolean emLimpeza, boolean isSujo, boolean chaveNoQuarto, Hotel hotel) {
 		this.id = id;
 		this.ocupado = ocupado;
 		this.chaveNoQuarto = chaveNoQuarto;
 		this.emLimpeza = emLimpeza;
 		this.hotel = hotel;
+		this.isSujo = isSujo;
 	}
 	
 	public boolean isOcupado() {
@@ -41,8 +42,7 @@ public class Quarto {
 	
 	public void livreParaLimpeza() {
 		chaveNoQuarto = false;
-		hotel.chamarCamareira(this);
-		chaveNoQuarto = true;
+		isSujo = true;
 	}
 	
 	public void removerHospedes() {
@@ -60,5 +60,9 @@ public class Quarto {
 
 	public int getId() {
 		return id;
+	}
+
+	public boolean isSujo() {
+		return isSujo;
 	}
 }

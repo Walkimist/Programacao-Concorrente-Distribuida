@@ -10,7 +10,7 @@ public class Main {
 		
 		Hospede[] hospedes = new Hospede[50];
 		for (int i = 0; i < 50; i ++) {
-			hospedes[i] = new Hospede(hotel);
+			hospedes[i] = new Hospede();
 		}
 		
 		int maximoHospedes = 50;
