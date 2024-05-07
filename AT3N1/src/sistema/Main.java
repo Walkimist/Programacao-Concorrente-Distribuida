@@ -42,8 +42,8 @@ public class Main {
 			recepcionista.start();
 		}
 		
-//		for (Recepcionista recepcionista : hotel.getRecepcionitas()) {
-//			recepcionista.start();
-//		}
+		for (Camareira camareira : hotel.getCamareiras()) {
+			camareira.start();
+		}
 	}
 }

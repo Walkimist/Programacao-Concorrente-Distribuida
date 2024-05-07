@@ -15,7 +15,7 @@ public class Recepcionista extends Thread {
     }
 	
 	private void verificarFilaEspera() {
-		if (hotel.buscarQuartosDisponiveis() != null && !hotel.getFilaEspera().isEmpty()) {
+		if (hotel.buscarQuartosDisponiveis() != null) {
 			Grupo proximoGrupo = hotel.getProximoGrupoFilaEspera();
 			if (proximoGrupo != null) {
 			hotel.alocarHospedes(proximoGrupo);
