@@ -20,7 +20,7 @@ class Hotel {
     public Hotel() {
     	quartos = new Quarto[10];
     	for (int i = 0; i < quartos.length; i ++) {
-    		quartos[i] = new Quarto(i+1, false, false, false, this);
+    		quartos[i] = new Quarto(i+1, false, false, false, false);
     	}
     	
     	filaEspera = new LinkedList<>();
@@ -50,13 +50,11 @@ class Hotel {
         for (int i = 0; i < hospedes.length; i++) {
         	listaHospedes.add(hospedes[i]);
         	index ++;
-        	System.out.println(listaHospedes);
         	if (index >= 4 || i == hospedes.length-1) {
         		Hospede[] grupoHospedes = new Hospede[listaHospedes.size()];
     			grupoHospedes = listaHospedes.toArray(grupoHospedes);
     			for (Hospede hospedeAlocado : grupoHospedes) {
     				hospedeAlocado.setQuarto(quartosDisponiveis[quarto]);
-    				System.out.println(hospedeAlocado.getQuarto());
     			}
     			quartosDisponiveis[quarto].setHospedes(grupoHospedes);
     			listaHospedes.clear();
@@ -67,7 +65,7 @@ class Hotel {
         System.out.println("Grupo " + grupo.getId() + " fez check-in");
     }
     
-    public void desalocarHospedes(Grupo grupo) {
+    public synchronized void desalocarHospedes(Grupo grupo) {
     	Hospede[] hospedes = grupo.getHospedes();
     	List<Quarto> quartosOcupados = new ArrayList<Quarto>();
     	for (Hospede hospede : hospedes) {
@@ -94,6 +92,15 @@ class Hotel {
 
         return quartosDisponiveis;
     }
+    
+    public synchronized void registrarReclamacao(Grupo grupo) {
+    	if (grupo.getTolerancia() > 0) {
+			System.out.println("Hotel cheio! O grupo " + grupo.getId() + " tentará mais " + grupo.getTolerancia() + " vezes");
+		} else if (grupo.getTolerancia() == 0) {
+			System.out.println("Grupo " + grupo.getId() + " desistiu de fazer check-in e deixou uma reclamação");
+		}
+    	grupo.setTolerancia(grupo.getTolerancia() - 1);
+	}
     
     public boolean checarQuartosDisponiveis() {
     	if (buscarQuartosDisponiveis().length == 0) {

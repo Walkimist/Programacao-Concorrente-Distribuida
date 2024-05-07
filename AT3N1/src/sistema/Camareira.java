@@ -30,12 +30,13 @@ public class Camareira extends Thread {
 	public synchronized void limparQuartos() throws InterruptedException {
 		for (Quarto quarto : hotel.getQuartos()) {
             synchronized (quarto) {
-                if (!quarto.isChaveNoQuarto()) {
+                if (!quarto.isChaveNoQuarto() && quarto.isSujo()) {
                 	quarto.setEmLimpeza(true);
                 	Thread.sleep(5000);
                     System.out.println(getName() + " limpando quarto " + quarto.getId());
                     Thread.sleep(2000);
                     quarto.setEmLimpeza(false);
+                    quarto.setSujo(false);
                     System.out.println(getName() + " limpou o quarto " + quarto.getId());
                 }
             }

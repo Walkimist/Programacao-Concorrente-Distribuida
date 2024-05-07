@@ -24,24 +24,22 @@ public class Recepcionista extends Thread {
 		while (hotel.getProximoGrupoFilaEspera() == null) {
 			Thread.sleep(new Random().nextInt(2000));
 		}
-		
 		Grupo proximoGrupo = hotel.getProximoGrupoFilaEspera();
 		int quantidadeQuartosNecessarios = quantidadeQuartosProGrupo(proximoGrupo);
 		Quarto[] quartosNecessarios = new Quarto[quantidadeQuartosNecessarios];
 		
-		if (hotel.checarQuartosDisponiveis()) {
+		if (hotel.checarQuartosDisponiveis() && hotel.buscarQuartosDisponiveis().length >= quantidadeQuartosNecessarios) {
 			for (int i = 0; i < quartosNecessarios.length; i ++) {
 				quartosNecessarios[i] = hotel.buscarQuartosDisponiveis()[i];
 			}
 		}
-		System.out.println(hotel.buscarQuartosDisponiveis().length + " > " + quantidadeQuartosNecessarios);
-		if (hotel.buscarQuartosDisponiveis().length >= quantidadeQuartosNecessarios) {
+		if (hotel.checarQuartosDisponiveis() && hotel.buscarQuartosDisponiveis().length >= quantidadeQuartosNecessarios) {
 			if (proximoGrupo != null) {
 				hotel.alocarHospedes(proximoGrupo, quartosNecessarios);
 				hotel.removerGrupoFila();
 			}
 		} else {
-			
+			hotel.registrarReclamacao(proximoGrupo);
 		}
 	}
 	

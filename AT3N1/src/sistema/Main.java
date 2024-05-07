@@ -31,7 +31,7 @@ public class Main {
 			}
 			Hospede[] grupoHospedes = new Hospede[listaHospedes.size()];
 			grupoHospedes = listaHospedes.toArray(grupoHospedes);
-			new Grupo(grupoHospedes, hotel).start();
+			new Grupo(grupoHospedes, hotel, 3).start();
 		}
 		
 		for (Hospede hospede : hospedes) {
