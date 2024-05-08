@@ -9,26 +9,28 @@ public class Hospede extends Thread {
 		this.quarto = null;
 	}
 	
-	public void setQuarto(Quarto quarto) {
-		this.quarto = quarto;
-	}
-	
+	//Getters
 	public Quarto getQuarto() {
 		return quarto;
+	}
+	
+	//Setters
+	public void setQuarto(Quarto quarto) {
+		this.quarto = quarto;
 	}
 
 	@Override
 	public void run() {
 		while (true) {
-			if (quarto != null) {
+			if (quarto != null) { //Se estiver alocado
 				try {
-					Thread.sleep(new Random().nextInt(15000));
+					Thread.sleep(new Random().nextInt(15000)); //Simula tempo aleatório antes de sair para passear
 					System.out.println("Quarto " + quarto.getId() + " livre para limpeza");
-					quarto.livreParaLimpeza();
-					while(quarto.isEmLimpeza()) {
-						Thread.sleep(new Random().nextInt(5000));
+					quarto.livreParaLimpeza(); //Libera quarto
+					while(quarto.isEmLimpeza()) { //Caso não esteja limpo, espera um tempo antes de tentar novamente
+						Thread.sleep(5000);
 					}
-					quarto.setChaveNoQuarto(true);
+					quarto.setChaveNoQuarto(true); //Retorna pro quarto
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

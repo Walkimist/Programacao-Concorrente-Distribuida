@@ -13,31 +13,6 @@ public class Quarto {
 		this.emLimpeza = emLimpeza;
 		this.isSujo = isSujo;
 	}
-	
-	public boolean isOcupado() {
-		return ocupado;
-	}
-
-	public boolean isEmLimpeza() {
-		return emLimpeza;
-	}
-
-	public void setEmLimpeza(boolean emLimpeza) {
-		this.emLimpeza = emLimpeza;
-	}
-	
-	public boolean isChaveNoQuarto() {
-		return chaveNoQuarto;
-	}
-
-	public void setChaveNoQuarto(boolean chaveNoQuarto) {
-		this.chaveNoQuarto = chaveNoQuarto;
-	}
-	
-	public void setHospedes(Hospede[] hospedes) {
-		this.hospedes = hospedes;
-		ocupado = true;
-	}
 
 	public void livreParaLimpeza() {
 		chaveNoQuarto = false;
@@ -45,12 +20,25 @@ public class Quarto {
 	}
 	
 	public void removerHospedes() {
-		for (Hospede hospede : hospedes) {
+		for (Hospede hospede : hospedes) { //Remove a ligação dos hospedes pro quarto
 			hospede.setQuarto(null);
 		}
-		livreParaLimpeza();
+		livreParaLimpeza(); //Libera para limpeza
 		hospedes = null;
 		ocupado = false;
+	}
+	
+	//Getters
+	public boolean isOcupado() {
+		return ocupado;
+	}
+
+	public boolean isEmLimpeza() {
+		return emLimpeza;
+	}
+	
+	public boolean isChaveNoQuarto() {
+		return chaveNoQuarto;
 	}
 	
 	public int getNumeroHospedes() {
@@ -64,8 +52,22 @@ public class Quarto {
 	public boolean isSujo() {
 		return isSujo;
 	}
+	
+	//Setters
+	public void setEmLimpeza(boolean emLimpeza) {
+		this.emLimpeza = emLimpeza;
+	}
 
 	public void setSujo(boolean isSujo) {
 		this.isSujo = isSujo;
+	}
+	
+	public void setChaveNoQuarto(boolean chaveNoQuarto) {
+		this.chaveNoQuarto = chaveNoQuarto;
+	}
+	
+	public void setHospedes(Hospede[] hospedes) {
+		this.hospedes = hospedes;
+		ocupado = true;
 	}
 }

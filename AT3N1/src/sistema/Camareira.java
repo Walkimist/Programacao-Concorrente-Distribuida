@@ -6,21 +6,23 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Camareira extends Thread {
 	private Hotel hotel;
-	private Lock lock;
+	private static int count = 1;
 	
 	public Camareira(Hotel hotel) {
 		this.hotel = hotel;
-		this.lock = new ReentrantLock();
+		this.setName("Camareira " + count);
+		count++;
 	}
 	
 	@Override
     public void run() {
         while (true) {
             try {
-                Thread.sleep(new Random().nextInt(20000)); // Tempo aleatório para simular limpeza dos quartos
+                Thread.sleep(new Random().nextInt(20000));  //Tempo aleatório para simular limpeza dos quartos
+                //Usa semáforo para limpar quartos e garantir que só 1 camareira vai limpar o quarto por vez
                 hotel.getSemaforoCamareiras().acquire();
                 limparQuartos();
-                hotel.getSemaforoCamareiras().release();
+                hotel.getSemaforoCamareiras().release();            
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -32,12 +34,11 @@ public class Camareira extends Thread {
             synchronized (quarto) {
                 if (!quarto.isChaveNoQuarto() && quarto.isSujo()) {
                 	quarto.setEmLimpeza(true);
-                	Thread.sleep(5000);
-                    System.out.println(getName() + " limpando quarto " + quarto.getId());
-                    Thread.sleep(2000);
+                	System.out.println(this.getName() + " limpando quarto " + quarto.getId());
+                	Thread.sleep(5000); //Simulando tempos de limpeza
                     quarto.setEmLimpeza(false);
                     quarto.setSujo(false);
-                    System.out.println(getName() + " limpou o quarto " + quarto.getId());
+                    System.out.println("Quarto " + quarto.getId() + " limpo!");
                 }
             }
         }

@@ -18,84 +18,89 @@ class Hotel {
     private Semaphore semaforoCamareiras;
     
     public Hotel() {
-    	quartos = new Quarto[10];
+    	//Declarando quartos
+    	quartos = new Quarto[10]; 
     	for (int i = 0; i < quartos.length; i ++) {
     		quartos[i] = new Quarto(i+1, false, false, false, false);
     	}
     	
-    	filaEspera = new LinkedList<>();
+    	//Declarando fila
+    	filaEspera = new LinkedList<>(); 
     	
-    	recepcionistas = new Recepcionista[5];
-    	semaforoRecepcionistas = new Semaphore(5);
+    	//Declarando recepcionistas
+    	recepcionistas = new Recepcionista[5]; 
+    	semaforoRecepcionistas = new Semaphore(5); //Semáforo
     	for (int i = 0; i < recepcionistas.length; i ++) {
     		recepcionistas[i] = new Recepcionista(this);
     	}
     	
-    	camareiras = new Camareira[10];
-    	semaforoCamareiras = new Semaphore(10);
+    	//Declarando camareiras
+    	camareiras = new Camareira[10]; 
+    	semaforoCamareiras = new Semaphore(10); //Semáforo
     	for (int i = 0; i < camareiras.length; i ++) {
-    		camareiras[i] = new Camareira(i+1, this);
+    		camareiras[i] = new Camareira(this);
     	}
     	
-    	lockFilaEspera = new ReentrantLock();
+    	lockFilaEspera = new ReentrantLock(); //Lock
     }
 
     public synchronized void alocarHospedes(Grupo grupo, Quarto[] quartos) {
         Quarto[] quartosDisponiveis = buscarQuartosDisponiveis();
-        Hospede[] hospedes = grupo.getHospedes();
+        Hospede[] hospedes = grupo.getHospedes(); //Pega todos os hospedes de um grupo
         int index = 0;
         int quarto = 0;
-        List<Hospede> listaHospedes = new ArrayList<Hospede>();
+        List<Hospede> listaHospedes = new ArrayList<Hospede>(); //ArrayList para realizar a divisão de hospedes nos quartos
         
-        for (int i = 0; i < hospedes.length; i++) {
+        for (int i = 0; i < hospedes.length; i++) { //Dentro dos hospedes do grupo
         	listaHospedes.add(hospedes[i]);
         	index ++;
-        	if (index >= 4 || i == hospedes.length-1) {
+        	if (index >= 4 || i == hospedes.length-1) { //Caso o quarto esteja cheio (4 hóspedes) OU não hajam mais hospedes para se adicionar
+        		
+        		//Convertendo ArrayList listaHospedes para array
         		Hospede[] grupoHospedes = new Hospede[listaHospedes.size()];
-    			grupoHospedes = listaHospedes.toArray(grupoHospedes);
-    			for (Hospede hospedeAlocado : grupoHospedes) {
+    			grupoHospedes = listaHospedes.toArray(grupoHospedes); 
+    			
+    			for (Hospede hospedeAlocado : grupoHospedes) { //Setando os quartos nos hospedes alocados
     				hospedeAlocado.setQuarto(quartosDisponiveis[quarto]);
     			}
-    			quartosDisponiveis[quarto].setHospedes(grupoHospedes);
-    			listaHospedes.clear();
+    			quartosDisponiveis[quarto].setHospedes(grupoHospedes); //Setando hospedes nos quartos
+    			listaHospedes.clear(); //Limpar lista para possível iteração em outros quartos
     			quarto ++;
     			index = 0;
         	}
         }
-        System.out.println("Grupo " + grupo.getId() + " fez check-in");
+        System.out.println(grupo.getName() + " fez check-in");
     }
     
     public synchronized void desalocarHospedes(Grupo grupo) {
-    	Hospede[] hospedes = grupo.getHospedes();
-    	List<Quarto> quartosOcupados = new ArrayList<Quarto>();
+    	Hospede[] hospedes = grupo.getHospedes(); //Pega todos os hospedes de um grupo
+    	List<Quarto> quartosOcupados = new ArrayList<Quarto>(); //ArrayList para realizar a remoção de hospedes dos quartos
+    	
     	for (Hospede hospede : hospedes) {
     		Quarto quarto = hospede.getQuarto();
-    		if (!quartosOcupados.contains(quarto)) {
+    		if (!quartosOcupados.contains(quarto)) { //Checa se a lista já possui o quarto, garantindo que não haverá execução dupla da remoção
     			quartosOcupados.add(quarto);
     		}
     	}
     	
-    	for (Quarto quarto : quartosOcupados) {
+    	for (Quarto quarto : quartosOcupados) { //Itera na lista filtrada de quartos
     		if (quarto != null) quarto.removerHospedes();
     	}
     }
 
     public Quarto[] buscarQuartosDisponiveis() {
-        List<Quarto> listaQuartosDisponiveis = new ArrayList<Quarto>();
-        for (Quarto quarto : quartos) {
+        List<Quarto> listaQuartosDisponiveis = new ArrayList<Quarto>(); //Lista para armazenar os quartos disponiveis
+        for (Quarto quarto : quartos) { //Itera em todos os quartos e verifica se está disponível
             if (!quarto.isOcupado() && !quarto.isEmLimpeza()) {
                 listaQuartosDisponiveis.add(quarto);
             }
         }
+        //Conversão de ArrayList para array
         Quarto[] quartosDisponiveis = new Quarto[listaQuartosDisponiveis.size()];
         quartosDisponiveis = listaQuartosDisponiveis.toArray(quartosDisponiveis);
 
-        return quartosDisponiveis;
+        return quartosDisponiveis; //retorna o array convertido
     }
-    
-    public synchronized void registrarReclamacao(Grupo grupo) {
-    	
-	}
     
     public boolean checarQuartosDisponiveis() {
     	if (buscarQuartosDisponiveis().length <= 0) {
@@ -107,8 +112,8 @@ class Hotel {
     public synchronized void colocarNaFila(Grupo grupo) {
         lockFilaEspera.lock();
         try {
-            filaEspera.add(grupo);
-            System.out.println("Grupo " + grupo.getId() + " colocado na fila");
+            filaEspera.add(grupo); //Adiciona grupo na fila para check-in
+            System.out.println(grupo.getName() + " colocado na fila");
         } finally {
             lockFilaEspera.unlock();
         }
@@ -117,7 +122,7 @@ class Hotel {
     public Grupo getProximoGrupoFilaEspera() {
         lockFilaEspera.lock();
         try {
-        	if (!filaEspera.isEmpty()) {
+        	if (!filaEspera.isEmpty()) { //Retorna o proximo grupo, apenas se não for nulo
         		return filaEspera.element();
         	}
             return null;
@@ -130,6 +135,7 @@ class Hotel {
     	filaEspera.remove();
     }
     
+    //Getters
     public Queue<Grupo> getFilaEspera() {
     	return filaEspera;
     }
