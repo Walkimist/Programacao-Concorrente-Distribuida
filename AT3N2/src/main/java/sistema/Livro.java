@@ -1,9 +1,18 @@
 package sistema;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Livro {
+	@JsonProperty("autor")
 	private String autor;
+	
+	@JsonProperty("nome")
 	private String nome;
+	
+	@JsonProperty("genero")
 	private String genero;
+	
+	@JsonProperty("numeroDeExemplares")
 	private int numeroDeExemplares;
 	
 	public Livro(String autor, String nome, String genero, int numeroDeExemplares) {
