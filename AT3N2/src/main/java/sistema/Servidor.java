@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Servidor {
 	private static final String ARQUIVO_LIVROS = "livros.json";
@@ -29,7 +30,7 @@ public class Servidor {
 		}
 	}
 	
-	private void salvarLivro() {
+	private void salvarLivros() {
 	    ObjectMapper mapper = new ObjectMapper();
 	    try {
 	        mapper.writerWithDefaultPrettyPrinter().writeValue(new File(ARQUIVO_LIVROS), livros);
@@ -38,15 +39,53 @@ public class Servidor {
 	    }
 	}
 	
+	private String listarLivros() {
+        return livros.stream()
+                .map(Livro::toString)
+                .collect(Collectors.joining("\n"));
+    }
+	
+	private String alugarLivro(String nome) {
+        for (Livro livro : livros) {
+            if (livro.getNome().equalsIgnoreCase(nome) && livro.getNumeroDeExemplares() > 0) {
+            	livro.setNumeroDeExemplares(livro.getNumeroDeExemplares() - 1);
+            	salvarLivros();
+                return "Livro alugado com sucesso!";
+            }
+        }
+        return "Livro não disponível.";
+    }
+	
+	private String devolverLivro(String nome) {
+        for (Livro livro : livros) {
+            if (livro.getNome().equalsIgnoreCase(nome)) {
+            	livro.setNumeroDeExemplares(livro.getNumeroDeExemplares() + 1);
+            	salvarLivros();
+                return "Livro devolvido com sucesso!";
+            }
+        }
+        return "Livro não encontrado.";
+    }
+	
+	private String cadastrarLivro(String autor, String nome, String genero, int numeroDeExemplares) {
+        livros.add(new Livro(autor, nome, genero, numeroDeExemplares));
+        salvarLivros();
+        return "Livro cadastrado com sucesso!";
+    }
+	
 	public synchronized String lidarComPedido(String pedido) {
         String[] partes = pedido.split(" ");
         String comando = partes[0];
 
         switch (comando) {
             case "LISTAR":
+            	return listarLivros();
             case "ALUGAR":
+            	return alugarLivro(partes[1]);
             case "DEVOLVER":
+            	return devolverLivro(partes[1]);
             case "CADASTRAR":
+            	return cadastrarLivro(partes[1], partes[2], partes[3], Integer.parseInt(partes[4]));
             default:
                 return "Comando Inválido: '" + partes[0] + "'";
         }
@@ -70,5 +109,8 @@ public class Servidor {
         }
 	}
 	
-	
+	public static void main(String[] args) {
+		Servidor servidor = new Servidor();
+		servidor.start();
+	}
 }
