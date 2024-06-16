@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Cliente {
 	private Socket socket;
@@ -17,10 +18,13 @@ public class Cliente {
         out = new PrintWriter(socket.getOutputStream(), true);
     }
 	
-	public String enviarPedido(String pedido) throws IOException {
-		out.println(pedido);
-		return in.readLine();
-	}
+	public void enviarPedido(String request) {
+        out.println(request);
+    }
+	
+	public String receberResposta() throws IOException {
+        return in.readLine();
+    }
 
 	public void close() throws IOException {
 		in.close();
@@ -28,4 +32,29 @@ public class Cliente {
 		socket.close();
 	}
 
+	public static void main(String[] args) {
+		try {
+            Cliente cliente = new Cliente("localhost", 12345);
+            
+            System.out.print("Comandos do servidor:\n"
+            		+ "'LISTAR' - Lista todos os livros em estoque\n"
+            		+ "'CADASTRAR <Nome-Do-Autor> <Nome-Do-Livro> <Genero> <Numero de Exemplares>'\n"
+            		+ "'ALUGAR <Nome-Do-Livro>'\n"
+            		+ "'DEVOLVER <Nome-Do-Livro>'\n\n"
+            		+ "Sempre que for colocar um nome composto em qualquer campo, separar cada palavra por '-', exemplo: 'Senhor-Dos-Anéis'\n\n> ");
+            
+            Scanner sc = new Scanner(System.in);
+            String entrada = sc.nextLine();
+            
+            cliente.enviarPedido(entrada);
+            String resposta = cliente.receberResposta().replace("Livro", "\nLivro");
+            
+            System.out.print("\nResposta do servidor:" + resposta + '\n');
+            
+            sc.close();
+            cliente.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
 }

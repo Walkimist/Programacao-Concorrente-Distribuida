@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Servidor {
-	private static final String ARQUIVO_LIVROS = "livros.json";
+	private static final String ARQUIVO_LIVROS = "src/main/java/resources/livros.json";
 	private List<Livro> livros;
 	
 	public Servidor() {
@@ -37,12 +37,14 @@ public class Servidor {
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
+	    carregarLivros();
 	}
 	
 	private String listarLivros() {
-        return livros.stream()
+		String listagem = livros.stream()
                 .map(Livro::toString)
-                .collect(Collectors.joining("\n"));
+                .collect(Collectors.joining(","));
+        return listagem;
     }
 	
 	private String alugarLivro(String nome) {

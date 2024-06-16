@@ -15,6 +15,8 @@ public class Livro {
 	@JsonProperty("numeroDeExemplares")
 	private int numeroDeExemplares;
 	
+	public Livro() {}
+	
 	public Livro(String autor, String nome, String genero, int numeroDeExemplares) {
 		this.autor = autor;
 		this.nome = nome;
@@ -52,5 +54,15 @@ public class Livro {
 
 	public void setNumeroDeExemplares(int numeroDeExemplares) {
 		this.numeroDeExemplares = numeroDeExemplares;
+	}
+	
+	@Override
+	public String toString() {
+		return "Livro{" +
+                "autor='" + autor + '\'' +
+                ", nome='" + nome + '\'' +
+                ", genero='" + genero + '\'' +
+                ", numeroDeExemplares=" + numeroDeExemplares +
+                '}';
 	}
 }
