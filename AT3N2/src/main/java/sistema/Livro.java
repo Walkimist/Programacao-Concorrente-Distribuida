@@ -3,6 +3,7 @@ package sistema;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Livro {
+	//@JsonProperty serve para mapear os campos JSON nas variáveis das classes
 	@JsonProperty("autor")
 	private String autor;
 	
@@ -15,15 +16,29 @@ public class Livro {
 	@JsonProperty("numeroDeExemplares")
 	private int numeroDeExemplares;
 	
+	//Construtor padrão necessário para a desserialização pelo Jackson
 	public Livro() {}
 	
+	//Construtor normal
 	public Livro(String autor, String nome, String genero, int numeroDeExemplares) {
 		this.autor = autor;
 		this.nome = nome;
 		this.genero = genero;
 		this.numeroDeExemplares = numeroDeExemplares;
 	}
-
+	
+	//Representação em string do objeto livro
+	@Override
+	public String toString() {
+	return "Livro{" +
+			"autor='" + autor + '\'' +
+    	", nome='" + nome + '\'' +
+    	", genero='" + genero + '\'' +
+    	", numeroDeExemplares=" + numeroDeExemplares +
+    	'}';
+	}
+	
+	//Getters e Setters
 	public String getAutor() {
 		return autor;
 	}
@@ -54,15 +69,5 @@ public class Livro {
 
 	public void setNumeroDeExemplares(int numeroDeExemplares) {
 		this.numeroDeExemplares = numeroDeExemplares;
-	}
-	
-	@Override
-	public String toString() {
-		return "Livro{" +
-                "autor='" + autor + '\'' +
-                ", nome='" + nome + '\'' +
-                ", genero='" + genero + '\'' +
-                ", numeroDeExemplares=" + numeroDeExemplares +
-                '}';
 	}
 }
