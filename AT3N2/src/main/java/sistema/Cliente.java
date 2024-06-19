@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Scanner;
 
 public class Cliente {
@@ -41,26 +42,36 @@ public class Cliente {
 		try {
 			//Cria um novo cliente conectado ao servidor localhost na porta 12345
             Cliente cliente = new Cliente("localhost", 12345);
-            
-            //Exibe os comandos disponíveis para o usuário
-            System.out.print("Comandos do servidor:\n"
-            		+ "'LISTAR' - Lista todos os livros em estoque\n"
-            		+ "'CADASTRAR <Nome-Do-Autor> <Nome-Do-Livro> <Genero> <Numero de Exemplares>'\n"
-            		+ "'ALUGAR <Nome-Do-Livro>'\n"
-            		+ "'DEVOLVER <Nome-Do-Livro>'\n\n"
-            		+ "Sempre que for colocar um nome composto em qualquer campo, substituir os espaços por '-', exemplo: 'Senhor-Dos-Anéis'\n\n> ");
-            
             //Scanner para ler a entrada do usuário
             Scanner sc = new Scanner(System.in);
-            String entrada = sc.nextLine();
-            
-            //Envia pedido e recebe resposta
-            cliente.enviarPedido(entrada);
-            //Separa resposta com quebras de linha para facilitar a leitura
-            String resposta = cliente.receberResposta().replace("Livro", "\nLivro");
-            
-            //Imprime resultado
-            System.out.print("\nResposta do servidor:\n" + resposta + '\n');
+          
+            System.out.print("Comandos do servidor:\n");
+            while (true) { //Loop de execução
+            	//Comandos disponíveis ao usuário
+                System.out.print("'LISTAR' - Lista todos os livros em estoque\n"
+                        + "'CADASTRAR <Nome-Do-Autor> <Nome-Do-Livro> <Genero> <Numero de Exemplares>'\n"
+                        + "'ALUGAR <Nome-Do-Livro>'\n"
+                        + "'DEVOLVER <Nome-Do-Livro>'\n"
+                        + "'SAIR'- finaliza a conexão.\n"
+                        + "Sempre que for colocar um nome composto em qualquer campo, substituir os espaços por '-', exemplo: 'Senhor-Dos-Anéis'\n\n> ");
+
+                String entrada = sc.nextLine();
+                
+                if (entrada.equalsIgnoreCase("SAIR")) { //Caso de saída
+                	System.out.println("\nVolte Sempre!");
+                    break;
+                }
+                
+                //Envia pedido e recebe resposta
+                cliente.enviarPedido(entrada);
+                String resposta = cliente.receberResposta();
+                
+                //Separa resposta com quebras de linha para facilitar a leitura
+                resposta = resposta.replace("Livro", "\nLivro");
+                //Imprime resultado    
+                System.out.print("\nResposta do servidor:\n" + resposta + "\n\n");
+                
+            }
             
             //Finaliza o scanner e a conexão
             sc.close();

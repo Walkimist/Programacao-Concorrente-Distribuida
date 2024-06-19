@@ -1,51 +1,62 @@
-[ {
-  "autor" : "J.K.-Rowling",
-  "nome" : "Harry-Potter-e-a-Pedra-Filosofal",
-  "genero" : "Ficção",
-  "numeroDeExemplares" : 9
-}, {
-  "autor" : "George-Orwell",
-  "nome" : "1984",
-  "genero" : "Distópico",
-  "numeroDeExemplares" : 6
-}, {
-  "autor" : "Jeff-Kinney",
-  "nome" : "Diario-De-Um-Banana",
-  "genero" : "Comédia",
-  "numeroDeExemplares" : 20
-}, {
-  "autor" : "John-Ronald-Reuel-Tolkien",
-  "nome" : "Senhor-Dos-Anéis",
-  "genero" : "Ficção",
-  "numeroDeExemplares" : 11
-}, {
-  "autor" : "Miguel-de-Cervantes",
-  "nome" : "Dom-Quixote",
-  "genero" : "Novela-Realista",
-  "numeroDeExemplares" : 32
-}, {
-  "autor" : "Júlio-Verne",
-  "nome" : "Viagem-ao-Centro-da-Terra",
-  "genero" : "Ficção",
-  "numeroDeExemplares" : 14
-}, {
-  "autor" : "Júlio-Verne",
-  "nome" : "Vinte-e-Mil-Léguas-Submarinas",
-  "genero" : "Ficção",
-  "numeroDeExemplares" : 5
-}, {
-  "autor" : "Antoine-de-Saint-Exupéry",
-  "nome" : "O-Pequeno-Príncipe",
-  "genero" : "Infantil",
-  "numeroDeExemplares" : 7
-}, {
-  "autor" : "Kate-O'Hearn",
-  "nome" : "Pegasus",
-  "genero" : "Ficção",
-  "numeroDeExemplares" : 3
-}, {
-  "autor" : "Victor-Hugo",
-  "nome" : "Os-Miseráveis",
-  "genero" : "Romance",
-  "numeroDeExemplares" : 9
-} ]
+[
+  {
+    "autor": "J.K.-Rowling",
+    "nome": "Harry-Potter-e-a-Pedra-Filosofal",
+    "genero": "Ficção",
+    "numeroDeExemplares": 9
+  },
+  {
+    "autor": "George-Orwell",
+    "nome": "1984",
+    "genero": "Distópico",
+    "numeroDeExemplares": 6
+  },
+  {
+    "autor": "Jeff-Kinney",
+    "nome": "Diario-De-Um-Banana",
+    "genero": "Comédia",
+    "numeroDeExemplares": 20
+  },
+  {
+    "autor": "John-Ronald-Reuel-Tolkien",
+    "nome": "Senhor-Dos-Anéis",
+    "genero": "Ficção",
+    "numeroDeExemplares": 11
+  },
+  {
+    "autor": "Miguel-de-Cervantes",
+    "nome": "Dom-Quixote",
+    "genero": "Novela-Realista",
+    "numeroDeExemplares": 32
+  },
+  {
+    "autor": "Júlio-Verne",
+    "nome": "Viagem-ao-Centro-da-Terra",
+    "genero": "Ficção",
+    "numeroDeExemplares": 13
+  },
+  {
+    "autor": "Júlio-Verne",
+    "nome": "Vinte-e-Mil-Léguas-Submarinas",
+    "genero": "Ficção",
+    "numeroDeExemplares": 5
+  },
+  {
+    "autor": "Antoine-de-Saint-Exupéry",
+    "nome": "O-Pequeno-Príncipe",
+    "genero": "Infantil",
+    "numeroDeExemplares": 7
+  },
+  {
+    "autor": "Kate-O'Hearn",
+    "nome": "Pegasus",
+    "genero": "Ficção",
+    "numeroDeExemplares": 0
+  },
+  {
+    "autor": "Victor-Hugo",
+    "nome": "Os-Miseráveis",
+    "genero": "Romance",
+    "numeroDeExemplares": 9
+  }
+]

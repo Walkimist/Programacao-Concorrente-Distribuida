@@ -111,20 +111,22 @@ public class Servidor {
 		//Cria um ServerSocket que escuta na porta 12345
 		try (ServerSocket serverSocket = new ServerSocket(12345)) {
             System.out.println("Servidor da biblioteca está rodando...");
-            
-            //Loop para aceitar e processar conexões de clientes
-            while (true) {
-                try (Socket socket = serverSocket.accept();
-                	// BufferedReader para entrada do cliente
-                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                	// PrintWriter para saída
-                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
-                	
-                	// Lê o pedido do cliente
-                    String pedido = in.readLine();
-                    // Processa o pedido e envia a resposta
-                    String resposta = lidarComPedido(pedido);
-                    out.println(resposta);
+
+            while (true) { //Loop para aceitar e processar conexões de clientes
+                try (Socket clientSocket = serverSocket.accept(); //Aguarda e aceita uma nova conexão
+                	//BufferedReader para entrada do cliente
+                    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                	//PrintWriter para saída
+                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
+
+                    String pedido;
+                    while ((pedido = in.readLine()) != null) { //Loop para ler múltiplas linhas de entrada do cliente
+                    	//Processa o pedido e envia a resposta
+                        String resposta = lidarComPedido(pedido);
+                        out.println(resposta);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         } catch (IOException e) {
